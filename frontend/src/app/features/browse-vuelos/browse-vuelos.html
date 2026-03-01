@@ -1,0 +1,33 @@
+<!-- browse-vuelos.html -->
+<app-card>
+  <h2>Vuelos disponibles</h2>
+
+  <table *ngIf="vuelos?.length; else loading">
+    <thead>
+      <tr>
+        <th>Origen</th>
+        <th>Destino</th>
+        <th>Salida</th>
+        <th>Llegada</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let vuelo of vuelos" 
+          [class.selected]="selectedId === vuelo.id"
+          (click)="selectVuelo(vuelo.id)">
+        <td>{{ vuelo.origen }}</td>
+        <td>{{ vuelo.destino }}</td>
+        <td>{{ vuelo.inicio | date:'short' }}</td>
+        <td>{{ vuelo.final | date:'short' }}</td>
+        <td>
+          <button (click)="goToDetails(vuelo.id)">Ver detalles</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #loading>
+    <p>Cargando vuelos...</p>
+  </ng-template>
+</app-card>
