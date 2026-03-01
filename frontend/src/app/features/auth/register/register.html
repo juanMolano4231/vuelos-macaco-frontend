@@ -1,1 +1,16 @@
-<p>register works!</p>
+<app-card>
+    <h2>Register</h2>
+    <form (ngSubmit)="register()">
+        <input type="text" name="nombre" placeholder="Nombre" [(ngModel)]="credentials.nombre" required />
+
+        <input type="email" name="correo" placeholder="Correo" [(ngModel)]="credentials.correo" required />
+
+        <input type="number" name="edad" placeholder="Edad" [(ngModel)]="credentials.edad" required />
+
+        <input type="password" name="contrasena" placeholder="Contraseña" [(ngModel)]="credentials.contrasena"
+            required />
+
+        <button type="submit">Registrarse</button>
+
+    </form>
+</app-card>
