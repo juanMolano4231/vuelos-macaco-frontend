@@ -1,0 +1,27 @@
+<app-card>
+  <h2>Tiquetes comprados</h2>
+
+  <table *ngIf="tickets?.length; else loading">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Valor</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let t of tickets" 
+          [class.selected]="selectedId === t.id"
+          (click)="selectTiquete(t.id)">
+        <td>{{ t.id }}</td>
+        <td>{{ t.valor }}</td>
+        <td>
+          <button (click)="goToDetails(t.id)">Ver detalles</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #loading>
+    <p>Cargando tiquetes...</p>
+  </ng-template>
+</app-card>
