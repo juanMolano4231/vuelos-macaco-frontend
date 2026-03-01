@@ -1,1 +1,12 @@
-<p>login works!</p>
+<app-card>
+    <h2>Login</h2>
+    <form (ngSubmit)="login()">
+        <input type="email" name="correo" placeholder="Correo" [(ngModel)]="credentials.correo" required />
+
+        <input type="password" name="contrasena" placeholder="Contraseña" [(ngModel)]="credentials.contrasena"
+            required />
+
+        <button type="submit">Entrar</button>
+
+    </form>
+</app-card>
