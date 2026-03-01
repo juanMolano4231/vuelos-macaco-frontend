@@ -14,18 +14,39 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './vuelo-detail.html',
   styleUrl: './vuelo-detail.scss',
 })
-export class VueloDetail implements OnInit{
+export class VueloDetail implements OnInit {
+
+  vuelo: Vuelo | null = null;
 
   constructor(
-  private api: Api,
-  private cdr: ChangeDetectorRef,
-  private router: Router,
-  private route: ActivatedRoute
-) {}
+    private api: Api,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private route: ActivatedRoute
+  ) { }
 
   ngOnInit() {
-  const id = this.route.snapshot.paramMap.get('id');
-  console.log('Vuelo ID:', id);
-  // fetch this.api.getVuelo(+id)
-}
+
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    console.log('Vuelo ID:', id);
+
+    this.api.getVuelo(id).subscribe({
+      next: (data) => {
+        this.vuelo = data;
+        this.cdr.detectChanges();
+      },
+      error: (err) => {
+        console.error('Failed to load vuelo:', err);
+        console.log('Status:', err.status, 'Message:', err.message);
+      }
+    });
+  }
+
+  comprarTiquete() {
+    if (!this.vuelo) return;
+    this.api.buyTicket(this.vuelo.id).subscribe({
+      next: () => this.router.navigate(['/dashboard']),
+      error: () => alert('Error al comprar')
+    });
+  }
 }

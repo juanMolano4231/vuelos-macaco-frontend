@@ -21,4 +21,7 @@ export class Api {
   getTicket(id: number) { return this.http.get<Tiquete>(`${this.url}/tickets/${id}`, this.headers()); }
   getVuelos() { return this.http.get<Vuelo[]>(`${this.url}/vuelos`, this.headers()); }
   getVuelo(id: number) { return this.http.get<Vuelo>(`${this.url}/vuelos/${id}`, this.headers()); }
+  buyTicket(vueloId: number) {
+  return this.http.post(`${this.url}/vuelos/${vueloId}`, {}, this.headers());
+}
 }
