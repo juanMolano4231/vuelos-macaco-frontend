@@ -6,7 +6,7 @@ import { Tiquete } from '../../models/tiquete';
 
 @Injectable({ providedIn: 'root' })
 export class Api {
-  private url = 'http://localhost:3000/api';
+  private url = 'https://vuelos-macaco.onrender.com/api';  // for local http://localhost:3000/api
   private token = '';
 
   constructor(private http: HttpClient) { }
