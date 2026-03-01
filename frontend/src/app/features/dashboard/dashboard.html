@@ -1,0 +1,20 @@
+<app-card>
+    <div *ngIf="user; else loading">
+        <h2>Bienvenido, {{ user.nombre }}</h2>
+        <p>Correo: {{ user.correo }}</p>
+        <p>Edad: {{ user.edad }}</p>
+
+        <br>
+
+        <br>
+
+        <app-button to="/vuelos" label="Ver vuelos"></app-button>
+        <br>
+        <br>
+        <app-button to="/tiquetes" label="Ver tiquetes"></app-button>
+    </div>
+
+    <ng-template #loading>
+        <p>Cargando...</p>
+    </ng-template>
+</app-card>
