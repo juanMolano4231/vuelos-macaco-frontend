@@ -7,6 +7,7 @@ import { Button } from '../../shared/button/button';
 import { Vuelo } from '../../models/vuelo';
 import { Router, RouterLink } from '@angular/router';
 import { Tiquete } from '../../models/tiquete';
+import { CacheService } from '../../core/services/cache-service';
 
 @Component({
   selector: 'app-browse-tiquetes',
@@ -18,17 +19,12 @@ export class BrowseTiquetes implements OnInit {
 
   tickets: Tiquete[] | null = null;
 
-  constructor(private api: Api, private cdr: ChangeDetectorRef, private router: Router) { }
+  constructor(private api: Api, private cdr: ChangeDetectorRef, private router: Router, private cache: CacheService) { }
 
   ngOnInit() {
-    this.api.getMyTickets().subscribe({
-      next: (data) => {
-        this.tickets = data;
-        console.log(this.tickets)
-        this.cdr.detectChanges();
-      },
-      error: () => console.error('Failed to load tickets')
-    });
+    this.tickets = this.cache.myTickets;
+
+    this.cdr.detectChanges();
   }
 
   selectedId: number | null = null;

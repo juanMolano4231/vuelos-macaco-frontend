@@ -7,6 +7,7 @@ import { Button } from '../../shared/button/button';
 import { Vuelo } from '../../models/vuelo';
 import { Router, RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { CacheService } from '../../core/services/cache-service';
 
 @Component({
   selector: 'app-vuelo-detail',
@@ -22,30 +23,32 @@ export class VueloDetail implements OnInit {
     private api: Api,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cache: CacheService
   ) { }
 
   ngOnInit() {
-
     const id = Number(this.route.snapshot.paramMap.get('id'));
     console.log('Vuelo ID:', id);
 
-    this.api.getVuelo(id).subscribe({
-      next: (data) => {
-        this.vuelo = data;
-        this.cdr.detectChanges();
-      },
-      error: (err) => {
-        console.error('Failed to load vuelo:', err);
-        console.log('Status:', err.status, 'Message:', err.message);
-      }
-    });
+    const vuelo = this.cache.allVuelos.find(v => v.id === id);
+
+    if (vuelo) {
+      this.vuelo = vuelo;
+      this.cdr.detectChanges();
+    } else {
+      console.error('Vuelo not found');
+    }
   }
 
   comprarTiquete() {
     if (!this.vuelo) return;
+
     this.api.buyTicket(this.vuelo.id).subscribe({
-      next: () => this.router.navigate(['/dashboard']),
+      next: async () => {
+        await this.cache.init();
+        this.router.navigate(['/dashboard']);
+      },
       error: () => alert('Error al comprar')
     });
   }

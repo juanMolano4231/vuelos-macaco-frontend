@@ -7,6 +7,7 @@ import { Button } from '../../shared/button/button';
 import { Vuelo } from '../../models/vuelo';
 import { Router, RouterLink } from '@angular/router';
 import { Dashboard } from '../dashboard/dashboard';
+import { CacheService } from '../../core/services/cache-service';
 
 @Component({
   selector: 'app-browse-vuelos',
@@ -18,16 +19,11 @@ export class BrowseVuelos implements OnInit {
 
   vuelos: Vuelo[] | null = null;
 
-  constructor(private api: Api, private cdr: ChangeDetectorRef, private router: Router) { }
+  constructor(private api: Api, private cdr: ChangeDetectorRef, private router: Router, private cache: CacheService) { }
 
   ngOnInit() {
-    this.api.getVuelos().subscribe({
-      next: (data) => {
-        this.vuelos = data;
-        this.cdr.detectChanges();
-      },
-      error: () => console.error('Failed to load vuelos')
-    });
+    this.vuelos = this.cache.allVuelos;
+    this.cdr.detectChanges();
   }
 
   selectedId: number | null = null;

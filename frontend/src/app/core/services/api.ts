@@ -11,6 +11,7 @@ export class Api {
 
   constructor(private http: HttpClient) { }
   setToken(t: string) { this.token = t; }
+  getToken() { return this.token; }
   headers() { return { headers: new HttpHeaders({ Authorization: `Bearer ${this.token}` }) }; }
 
   login(c: any) { return this.http.post(`${this.url}/auth/login`, c); }

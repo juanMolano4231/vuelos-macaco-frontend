@@ -8,6 +8,7 @@ import { Vuelo } from '../../models/vuelo';
 import { Router, RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
 import { Tiquete } from '../../models/tiquete';
+import { CacheService } from '../../core/services/cache-service';
 
 @Component({
   selector: 'app-tiquete-detail',
@@ -24,33 +25,27 @@ export class TiqueteDetail implements OnInit {
     private api: Api,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cache: CacheService
   ) { }
 
   ngOnInit() {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     console.log('Ticket ID:', id);
 
-    this.api.getTicket(id).subscribe({
-      next: (tiquete) => {
-        this.tiquete = tiquete;
-        this.cdr.detectChanges();
+    const tiquete = this.cache.myTickets.find(t => t.id === id);
 
-        if (tiquete?.idVuelo) {
-          this.api.getVuelo(tiquete.idVuelo).subscribe({
-            next: (vuelo) => {
-              this.vuelo = vuelo;
-              this.cdr.detectChanges();
-            },
-            error: (err) => {
-              console.error('Failed to load vuelo:', err);
-            }
-          });
-        }
-      },
-      error: (err) => {
-        console.error('Failed to load tiquete:', err);
+    if (tiquete) {
+      this.tiquete = tiquete;
+
+      const vuelo = this.cache.allVuelos.find(v => v.id === tiquete.idVuelo);
+      if (vuelo) {
+        this.vuelo = vuelo;
       }
-    });
+
+      this.cdr.detectChanges();
+    } else {
+      console.error('Ticket not found');
+    }
   }
 }
