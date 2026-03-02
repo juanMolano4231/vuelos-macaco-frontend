@@ -6,6 +6,7 @@ import { Card } from '../../shared/card/card';
 import { Button } from '../../shared/button/button';
 import { Vuelo } from '../../models/vuelo';
 import { Router, RouterLink } from '@angular/router';
+import { Dashboard } from '../dashboard/dashboard';
 
 @Component({
   selector: 'app-browse-vuelos',

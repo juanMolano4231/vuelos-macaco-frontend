@@ -6,6 +6,8 @@
   <p><strong>Llegada:</strong> {{ vuelo.final | date:'short' }}</p>
 
   <button (click)="comprarTiquete()">Comprar Tiquete</button>
+  <app-button to="/vuelos" label="Volver"></app-button>
+
 </app-card>
 
 <ng-template #loading>
