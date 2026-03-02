@@ -38,6 +38,12 @@ export class CacheService {
       this.user = me;
       this.myTickets = myTickets ?? [];
       this.allVuelos = allVuelos ?? [];
+
+      // Debug print
+      console.log('Cache loaded:');
+      console.log('User:', this.user);
+      console.log('My Tickets:', this.myTickets);
+      console.log('All Vuelos:', this.allVuelos);
     } catch (err) {
       console.error('Cache init failed', err);
       this.router.navigate(['/login']);
