@@ -19,13 +19,13 @@ export class Login {
   constructor(private api: Api, private router: Router, private cache: CacheService) { }
 
   login() {
-    this.api.login(this.credentials).subscribe({
-      next: (res: any) => {
-        this.api.setToken(res.token);
-        this.router.navigate(['/dashboard']);
-      },
-      error: () => alert('Login failed')
-    });
-    this.cache.init();
-  }
+  this.api.login(this.credentials).subscribe({
+    next: async (res: any) => {
+      this.api.setToken(res.token);
+      await this.cache.init();
+      this.router.navigate(['/dashboard']);
+    },
+    error: () => alert('Login failed')
+  });
+}
 }
