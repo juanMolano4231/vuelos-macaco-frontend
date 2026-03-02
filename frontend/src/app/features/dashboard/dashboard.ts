@@ -4,6 +4,7 @@ import { Usuario } from '../../models/usuario';
 import { Api } from '../../core/services/api';
 import { Card } from '../../shared/card/card';
 import { Button } from '../../shared/button/button';
+import { CacheService } from '../../core/services/cache-service';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,15 +15,9 @@ import { Button } from '../../shared/button/button';
 export class Dashboard implements OnInit {
   user: Usuario | null = null;
 
-  constructor(private api: Api, private cdr: ChangeDetectorRef) { }
+  constructor(private api: Api, private cdr: ChangeDetectorRef, private cache: CacheService) { }
 
   ngOnInit() {
-    this.api.getMe().subscribe({
-      next: (data) => {
-        this.user = data;
-        this.cdr.detectChanges();
-      },
-      error: () => console.error('Failed to load user')
-    });
+    this.user = this.cache.user;
   }
 }
